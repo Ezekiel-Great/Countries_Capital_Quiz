@@ -1,0 +1,2 @@
+# Countries_Capital_Quiz
+ This project is a Capital Cities Quiz App that tests users' knowledge of world capitals. It fetches country data from an external API and presents 10 random questions, asking users to identify the capital cities of different countries. The quiz provides immediate feedback by highlighting correct answers in green and incorrect answers in red. Users can track their progress, view their final score, and retake the quiz.
