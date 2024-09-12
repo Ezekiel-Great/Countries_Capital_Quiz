@@ -17,7 +17,11 @@ async function fetchCountries() {
   try {
     const response = await fetch('https://restcountries.com/v2/all');
     if (!response.ok) throw new Error('Network response was not ok');
-    countries = await response.json();
+    let data = await response.json();
+
+    // Filter out countries with no capital
+    countries = data.filter(country => country.capital && country.capital.trim() !== "");
+    
     if (countries.length > 0) {
       startQuiz();
     } else {
@@ -39,7 +43,7 @@ function getRandomQuestions() {
   let shuffled = countries.sort(() => 0.5 - Math.random());
   selectedQuestions = shuffled.slice(0, 10).map(country => ({
     country: country.name,
-    capital: country.capital || 'Unknown'
+    capital: country.capital
   }));
 }
 
@@ -85,7 +89,7 @@ function handleAnswer(button, selectedOption, correctAnswer) {
     btn.disabled = true;
     if (btn.textContent === correctAnswer) {
       btn.classList.add('correct');
-    } else if (btn.textContent === selectedOption) {
+    } else {
       btn.classList.add('incorrect');
     }
   });
@@ -159,9 +163,9 @@ playAgainButton.addEventListener('click', () => {
   prevButton.style.display = 'inline-block';
   nextButton.style.display = 'inline-block';
   resultElement.textContent = '';
-  
+
   // Re-fetch new set of random questions and start quiz again
-  fetchCountries(); // Fetch new questions
+  fetchCountries();
 });
 
 // Initialize the quiz app
